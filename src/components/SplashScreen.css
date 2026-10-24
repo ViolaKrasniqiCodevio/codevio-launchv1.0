@@ -1,0 +1,47 @@
+/* Minimal first-load splash: full-screen black, the wordmark centred.
+   Timings are driven from SplashScreen.jsx (HOLD_MS / FADE_OUT_MS); only the
+   durations here must stay in sync with those constants. */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 10001; /* above the skip link (10000) and every page layer */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  /* FADE_OUT_MS in SplashScreen.jsx */
+  transition: opacity 380ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.splash[data-leaving] {
+  opacity: 0;
+}
+
+.splash__logo {
+  display: block;
+  width: clamp(180px, 22vw, 260px);
+  height: auto;
+  animation: splash-logo-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes splash-logo-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Reduced motion skips the splash entirely in JS; this is belt-and-braces for
+   an OS preference toggled mid-splash. */
+@media (prefers-reduced-motion: reduce) {
+  .splash,
+  .splash__logo {
+    transition: none;
+    animation: none;
+  }
+}

@@ -1,0 +1,463 @@
+@import "tailwindcss";
+
+.site-route {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.site-route-content {
+  display: flex;
+  min-height: 100vh;
+  flex: 1;
+  flex-direction: column;
+}
+
+.site-route-content > main {
+  min-height: calc(100svh + 1px);
+  flex: 1;
+}
+
+.liquid-glass {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(10, 10, 15, 0.72) 0%,
+      rgba(10, 10, 15, 0.5) 100%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.015) 100%
+    );
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 24px 48px -24px rgba(0, 0, 0, 0.55);
+}
+
+:root {
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --bg: #0a0a0f;
+  --border: #2e303a;
+  --code-bg: #1f2028;
+  --selection-background: rgba(0, 0, 0, 0.35);
+  --selection-foreground: #ffffff;
+  --scrollbar-thumb: #ffffff;
+  --shadow:
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+
+  /* Two-font brand system, on purpose:
+     - --heading: Dela Gothic One, the primary face, for h1/h2 and the wordmark.
+     - --sans (the inherited/secondary face): Bebas Neue. It is unicase — its
+       lowercase letters ARE the capital outlines (the shipped woff2 gives `a`
+       and `A` the same bounds and advance) — so body copy, list items and
+       form fields deliberately render as all caps. This is the intended
+       editorial look; do not "fix" it by swapping in a text face. */
+  --sans: 'Bebas Neue', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Dela Gothic One', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: dark;
+  color: var(--text);
+  background-color: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1023.98px) {
+    font-size: 16px;
+  }
+}
+
+::selection {
+  background: var(--selection-background);
+  color: var(--selection-foreground);
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: #db364e;
+  color: #fff;
+  font-family: 'Bebas Neue', system-ui, sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* The skip link targets #main, which is tabIndex={-1} and is a container rather
+   than a control. Focusing it programmatically is what gives keyboard and screen
+   reader users the new page after a route change, so suppress the UA outline it
+   would otherwise draw around the whole viewport. */
+#main:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@layer base {
+  /* Base colour lives on <html> only: an opaque body background would paint
+     over the fixed z-index:-1 background canvas (.pixelblast-bg). Keeping it
+     flat black means the pre-shader/pre-JS paint is neutral instead of a
+     gradient flash. */
+  html {
+    background-color: var(--bg);
+  }
+
+  body {
+    margin: 0;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    border-inline: 1px solid var(--border);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--heading);
+    font-weight: 500;
+    color: var(--text-h);
+  }
+
+  h1 {
+    font-size: 56px;
+    letter-spacing: -1.68px;
+    margin: 32px 0;
+    @media (max-width: 1023.98px) {
+      font-size: 36px;
+      margin: 16px 0;
+    }
+  }
+  h2 {
+    font-size: 24px;
+    line-height: 118%;
+    letter-spacing: -0.24px;
+    margin: 0 0 8px;
+    @media (max-width: 1023.98px) {
+      font-size: 20px;
+    }
+  }
+  p {
+    margin: 0;
+  }
+}
+
+/* Fluid display type on small screens. Uses unlayered rules so it wins over
+   Tailwind utilities at mobile widths while leaving the desktop overrides
+   below untouched (they only apply at min-width: 1024px). */
+@media (max-width: 639px) {
+  h1.text-5xl,
+  h1.text-4xl,
+  h1.text-3xl {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    line-height: 1.08;
+  }
+
+  h2.text-4xl,
+  h2.text-3xl {
+    font-size: clamp(1.75rem, 6.5vw, 2.25rem);
+  }
+}
+
+/* Phones get a tighter tech marquee: the desktop/inline 60px logos and 60px
+   gaps read oversized on narrow screens. */
+@media (max-width: 767.98px) {
+  .home-tech-loop {
+    --logoloop-logoHeight: 34px !important;
+    --logoloop-gap: 36px !important;
+    margin-top: 4rem !important;
+    margin-bottom: 4rem !important;
+  }
+}
+
+/* Editorial layout shared by /services and /about. Numbered sections sit on
+   hairlines instead of card backgrounds, so the display sizes below are owned
+   here rather than by the compact-layout utility overrides further down. */
+.editorial-hero-title {
+  font-size: clamp(2.1rem, 7vw, 4.25rem);
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+}
+
+.editorial-title {
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+}
+
+.editorial-row-title {
+  font-size: clamp(1.05rem, 1.05rem + 0.6vw, 1.35rem);
+  line-height: 1.2;
+}
+
+.editorial-index-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .editorial-index-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 3.5rem;
+  }
+}
+
+.editorial-split {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .editorial-split {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 3.5rem;
+  }
+
+  .editorial-split > :first-child {
+    flex: 0 0 36%;
+  }
+
+  .editorial-split--wide > :first-child {
+    flex: 0 0 52%;
+  }
+
+  .editorial-split > :last-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+/* Desktop density matches the composition users previously reached at 75% zoom.
+   Mobile and tablet retain their original spacing and breakpoints. */
+.footer-desktop-break {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .footer-desktop-break {
+    display: block;
+  }
+
+  .compact-layout {
+    padding: 72px 18px;
+  }
+
+  .compact-layout section {
+    max-width: 1080px;
+  }
+
+  .compact-layout section[class*='pt-28'] {
+    padding-top: 84px;
+  }
+
+  .compact-layout section[class*='pt-32'] {
+    padding-top: 96px;
+  }
+
+  .compact-layout section[class*='mt-28'] {
+    margin-top: 84px;
+  }
+
+  .compact-layout section[class*='mt-24'] {
+    margin-top: 72px;
+  }
+
+  .compact-layout section[class*='mt-16'] {
+    margin-top: 48px;
+  }
+
+  .compact-layout .grid {
+    gap: 18px;
+  }
+
+  .compact-layout .gap-8 {
+    gap: 24px;
+  }
+
+  .compact-layout .gap-6 {
+    gap: 18px;
+  }
+
+  .compact-layout .rounded-2xl[class*='p-'] {
+    padding: 21px;
+  }
+
+  .compact-layout .text-6xl {
+    font-size: 3rem;
+  }
+
+  .compact-layout .text-5xl {
+    font-size: 2.5rem;
+  }
+
+  .compact-layout .text-4xl {
+    font-size: 2rem;
+  }
+
+  .compact-layout .text-3xl {
+    font-size: 1.65rem;
+  }
+
+  .compact-layout .text-2xl {
+    font-size: 1.35rem;
+  }
+
+  .compact-layout .text-xl {
+    font-size: 1rem;
+  }
+
+  .compact-layout .text-lg {
+    font-size: 0.95rem;
+  }
+
+  .compact-layout .mt-10 {
+    margin-top: 30px;
+  }
+
+  .compact-layout .mt-8 {
+    margin-top: 24px;
+  }
+
+  .compact-layout .mt-6 {
+    margin-top: 18px;
+  }
+
+  .compact-layout .mt-4 {
+    margin-top: 12px;
+  }
+
+  .compact-layout .p-10 {
+    padding: 30px;
+  }
+
+  .compact-layout .p-8 {
+    padding: 24px;
+  }
+
+  .compact-layout .px-6 {
+    padding-inline: 18px;
+  }
+
+  .compact-layout .py-3 {
+    padding-block: 9px;
+  }
+
+  .compact-layout .px-6.py-3 {
+    padding-inline: 18px;
+  }
+
+  .home-positioning {
+    min-height: 82vh;
+    max-width: 1260px;
+    padding-block: 36px;
+  }
+
+  .home-tech-loop {
+    --logoloop-logoHeight: 48px !important;
+    --logoloop-gap: 48px !important;
+    margin-top: 7rem !important;
+    margin-bottom: 7rem !important;
+  }
+
+  .home-positioning .max-w-5xl {
+    max-width: 850px;
+  }
+
+  .home-positioning .text-7xl {
+    font-size: 4.25rem;
+  }
+
+  .home-positioning .text-6xl {
+    font-size: 3.5rem;
+  }
+
+  .home-positioning .mt-16 {
+    margin-top: 42px;
+  }
+
+  .home-positioning .gap-8 {
+    gap: 24px;
+  }
+
+  .compact-footer {
+    min-height: 480px;
+    max-width: 1028px;
+    padding: 18px 0 12px;
+  }
+
+  .compact-footer > div:first-child {
+    gap: 0;
+  }
+
+  .compact-footer > div:nth-child(2) {
+    gap: 24px;
+    grid-template-columns: 1.35fr 0.65fr;
+  }
+
+  .compact-footer > div:nth-child(2) > div:first-child {
+    max-width: 600px;
+  }
+
+  .compact-footer > div:nth-child(2) > div:last-child {
+    min-width: 250px;
+    gap: 14px;
+    font-size: 0.85rem;
+  }
+
+  .compact-footer > div:last-child {
+    padding-top: 16px;
+  }
+
+  .compact-footer > div:first-child nav span {
+    font-size: 0.8rem;
+  }
+
+  .compact-footer > div:nth-child(2) p {
+    font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+    line-height: 0.9;
+  }
+}

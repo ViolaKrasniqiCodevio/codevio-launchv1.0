@@ -1,0 +1,269 @@
+.lanyard-scroll-wrapper {
+  position: relative;
+  min-height: 115vh;
+  overflow: visible;
+  z-index: 40;
+}
+
+.lanyard-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.lanyard-nav {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  font-family: 'Dela Gothic One', sans-serif;
+}
+
+.lanyard-nav--fixed {
+  position: fixed;
+  z-index: 60;
+}
+
+.lanyard-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lanyard-wrapper canvas {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  touch-action: pan-y;
+}
+
+.lanyard-deco {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.lanyard-deco--left {
+  left: clamp(1rem, 4vw, 4%);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lanyard-deco--right {
+  right: clamp(1rem, 4vw, 4%);
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right;
+}
+
+.lanyard-deco--center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(92vw, 1200px);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.lanyard-deco__word {
+  font-size: clamp(2.4rem, 8vw, 9rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  font-family: 'Dela Gothic One', sans-serif;
+}
+
+.lanyard-deco__word--outlined {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #ffffff;
+}
+
+.lanyard-deco__word--ghost {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.lanyard-deco__word--solid {
+  color: #ffffff;
+}
+
+.pixelblast-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Darkens the animated shader so overlaid text clears WCAG AA contrast. */
+.pixelblast-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 35%,
+    rgba(10, 10, 15, 0.3) 0%,
+    rgba(10, 10, 15, 0.5) 100%
+  );
+}
+
+.lanyard-textbox {
+  position: absolute;
+  right: clamp(1rem, 4vw, 4%);
+  bottom: clamp(2rem, 8vh, 8%);
+  width: min(260px, 80vw);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(14px, 2vw, 16px);
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  z-index: 3;
+}
+
+.lanyard-nav .sm-scope .staggered-menu-panel,
+.lanyard-nav .sm-scope .sm-prelayers {
+  width: clamp(300px, 46vw, 520px);
+}
+
+@media (max-width: 768px) {
+  .lanyard-nav .sm-scope .staggered-menu-panel,
+  .lanyard-nav .sm-scope .sm-prelayers {
+    width: 100%;
+  }
+}
+
+.lanyard-nav .sm-scope .sm-panel-item {
+  font-size: clamp(1.6rem, 4.8vw, 2.8rem) !important;
+  letter-spacing: -0.03em;
+  padding-right: 1.15em !important;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.lanyard-nav .sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after {
+  font-size: clamp(11px, 2vw, 14px);
+  right: 0;
+}
+
+@media (max-width: 900px) {
+  .lanyard-deco--left,
+  .lanyard-deco--right {
+    opacity: 0.35;
+  }
+
+  .lanyard-deco__word {
+    font-size: clamp(2rem, 9vw, 5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .lanyard-scroll-wrapper {
+    min-height: 105vh;
+  }
+
+  .lanyard-deco--left,
+  .lanyard-deco--right {
+    display: none;
+  }
+
+  .lanyard-deco--center {
+    top: 67%;
+    width: 92vw;
+    white-space: normal;
+  }
+
+  .lanyard-deco__word {
+    font-size: clamp(2rem, 11vw, 4rem);
+    line-height: 1.08;
+  }
+
+  .lanyard-textbox {
+    left: 50%;
+    right: auto;
+    bottom: 5%;
+    width: min(88vw, 340px);
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .lanyard-nav .sm-scope .sm-panel-item {
+    font-size: clamp(1.5rem, 5.5vw, 2.2rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .lanyard-scroll-wrapper {
+    min-height: 100vh;
+  }
+
+  .lanyard-deco--center {
+    top: 70%;
+  }
+
+  .lanyard-deco__word {
+    font-size: clamp(1.75rem, 12vw, 3.1rem);
+  }
+
+  .lanyard-textbox {
+    bottom: 4%;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .lanyard-nav .sm-scope .sm-panel-item {
+    font-size: clamp(1.4rem, 7vw, 2rem) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .lanyard-nav .sm-scope .sm-panel-item {
+    font-size: 1.35rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .lanyard-textbox {
+    bottom: 3.25rem;
+  }
+}
+
+.lanyard-wrapper canvas {
+  touch-action: pan-y;
+}
+
+@media (max-width: 768px) {
+  .lanyard-wrapper canvas {
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .lanyard-textbox {
+    bottom: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lanyard-nav .sm-scope .staggered-menu-panel,
+  .lanyard-nav .sm-scope .sm-prelayers {
+    width: clamp(300px, 32vw, 390px);
+  }
+
+  .lanyard-nav .sm-scope .sm-panel-item {
+    font-size: clamp(1.5rem, 3.5vw, 2.1rem) !important;
+  }
+}

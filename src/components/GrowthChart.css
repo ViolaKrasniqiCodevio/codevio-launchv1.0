@@ -1,0 +1,139 @@
+/* Home "growth" chart. Labels are SVG text in user units (the svg is
+   viewBox-scaled), so the sizes step up at small widths where the whole plot
+   would otherwise shrink with the container. */
+
+.growth__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.growth__legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.growth__swatch {
+  width: 26px;
+  height: 0;
+  border-top-width: 3px;
+  border-top-style: solid;
+  border-radius: 2px;
+}
+
+.growth__swatch--with {
+  border-top-color: #db364e;
+}
+
+.growth__swatch--without {
+  border-top-color: rgba(255, 255, 255, 0.4);
+  border-top-style: dashed;
+}
+
+.growth__svg {
+  display: block;
+  width: 100%;
+  /* Slightly narrower than the section column so the plot reads as a figure,
+     not a full-bleed banner. */
+  max-width: 1160px;
+  margin-inline: auto;
+  height: auto;
+  /* Explicit ratio keeps the plot from collapsing on mobile browsers that
+     mishandle height:auto on viewBox SVGs. */
+  aspect-ratio: 1000 / 430;
+  /* Small screens step the label sizes up, so let edge ticks paint slightly
+     outside the viewBox instead of being clipped. */
+  overflow: visible;
+}
+
+.growth__svg text {
+  font-family: var(--sans);
+  letter-spacing: 0.06em;
+  fill: rgba(255, 255, 255, 0.45);
+}
+
+.growth__grid {
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-width: 1;
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+
+.growth__line {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.growth__line--with {
+  stroke: #db364e;
+  stroke-width: 3;
+}
+
+.growth__line--without {
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 2;
+  stroke-dasharray: 8 8;
+}
+
+/* Vertical columns from each peak down to the baseline. */
+.growth__drop {
+  stroke: url(#growth-drop);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.growth__dot {
+  fill: #e0405a;
+  stroke: rgba(10, 10, 15, 0.85);
+  stroke-width: 2;
+}
+
+.growth__tick {
+  font-size: 16px;
+}
+
+.growth__marker-label {
+  font-size: 16px;
+  fill: #fcdfe4;
+}
+
+.growth__axis-title {
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .growth__tick,
+  .growth__marker-label,
+  .growth__axis-title {
+    font-size: 30px;
+  }
+
+  /* The enlarged "Week 0" would clip against the viewBox edge, and the
+     "weeks →" caption collides with the week-12 tick — anchor the origin
+     left and drop the caption on phones. */
+  .growth__tick--origin {
+    text-anchor: start;
+  }
+
+  .growth__tick--weeks {
+    display: none;
+  }
+
+  .growth__line--with {
+    stroke-width: 5;
+  }
+
+  .growth__line--without {
+    stroke-width: 3.5;
+  }
+
+  .growth__drop {
+    stroke-width: 5;
+  }
+}

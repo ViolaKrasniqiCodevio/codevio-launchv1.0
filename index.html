@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* <html> only — keep <body> transparent so the fixed background layer
+         stays visible. A flat dark colour covers the pre-JS/pre-shader paint
+         (the animated background replaces it once it mounts). */
+      html {
+        background-color: #0a0a0f;
+      }
+
+      /* Pre-React cover for the splash screen. public/splash-boot.js adds
+         .splash-hold before the first paint when the splash will show; the
+         React SplashScreen removes it on mount, and the boot script's
+         failsafe timer removes it if the bundle never loads. */
+      html.splash-hold {
+        background-color: #000 !important;
+      }
+    </style>
+    <title>Codevio</title>
+    <meta
+      name="description"
+      content="Codevio is a small launch studio. Two to three senior designers and engineers ship brand, website, and product in fixed sprints — from blank page to paying customers."
+    />
+    <link rel="canonical" href="https://codevio.net/" />
+    <meta property="og:title" content="Codevio" />
+    <meta
+      property="og:description"
+      content="Codevio is a small launch studio. Two to three senior designers and engineers ship brand, website, and product in fixed sprints — from blank page to paying customers."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://codevio.net/" />
+    <meta property="og:image" content="https://codevio.net/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Codevio" />
+    <meta property="og:site_name" content="Codevio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Codevio" />
+    <meta
+      name="twitter:description"
+      content="Codevio is a small launch studio. Two to three senior designers and engineers ship brand, website, and product in fixed sprints — from blank page to paying customers."
+    />
+    <meta name="twitter:image" content="https://codevio.net/og-image.png" />
+    <meta name="theme-color" content="#0a0a0f" />
+    <script src="/splash-boot.js"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Codevio",
+        "url": "https://codevio.net/",
+        "logo": "https://codevio.net/og-image.png",
+        "email": "info.codevio@gmail.com",
+        "description": "Codevio is a small launch studio. Two to three senior designers and engineers ship brand, website, and product in fixed sprints.",
+        "sameAs": [
+          "https://www.instagram.com/codev.io/",
+          "https://www.linkedin.com/company/codevio00/",
+          "https://x.com/codevio_agency"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Codevio",
+        "url": "https://codevio.net/"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p>
+        Codevio is a small launch studio — brand, website, and product
+        shipped in fixed sprints, from blank page to paying customers. This site
+        needs JavaScript to display. You can email us at
+        <a href="mailto:info.codevio@gmail.com">info.codevio@gmail.com</a>.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
